@@ -1,11 +1,11 @@
 use std::time::Duration;
 use tokio::time::timeout;
 
-struct TimeLimiter {
+struct Timeout {
     max_duration: Duration,
 }
 
-impl TimeLimiter {
+impl Timeout {
     fn new(max_duration: Duration) -> Self {
         Self { max_duration }
     }
@@ -31,7 +31,7 @@ mod tests {
 
     #[tokio::test]
 async fn test_timelimiter() {
-    let time_limiter = Arc::new(TimeLimiter::new(Duration::from_secs(2))); // 2 seconds limit
+    let time_limiter = Arc::new(Timeout::new(Duration::from_secs(2))); // 2 seconds limit
 
     let handles: Vec<_> = (0..10)
         .map(|i| {
