@@ -12,7 +12,11 @@ The bulkhead pattern is a way to limit the number of concurrent requests that ca
 
 The circuit breaker pattern is a way to handle failures in a service by temporarily stopping requests to that service. This can help prevent cascading failures in your application.
 
-### Retry
+### Rate Limiter
+
+The rate limiter pattern is a way to limit the number of requests that can be made to a service over a given period of time. This can help prevent a service from being overwhelmed by too many requests.
+
+### Retry Policy
 
 The retry pattern is a way to automatically retry requests that have failed. This can help improve the reliability of your application by automatically recovering from transient failures.
 
