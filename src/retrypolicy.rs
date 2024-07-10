@@ -38,8 +38,13 @@ impl RetryPolicy {
     }
 }
 
-#[tokio::main]
-async fn main() {
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use std::sync::atomic::{AtomicUsize, Ordering};
+
+    #[tokio::test]
+async fn test_retrypolicy() {
     let retry_policy = Arc::new(RetryPolicy::new(3, Duration::from_secs(1))); // 3 retries, 1 second delay
 
     let handles: Vec<_> = (0..10)
@@ -70,4 +75,4 @@ async fn main() {
 
     futures::future::join_all(handles).await;
 }
-
+}

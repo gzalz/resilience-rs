@@ -1,7 +1,4 @@
-use std::sync::{Arc, Mutex};
-use std::sync::mpsc::{self, Sender, Receiver};
-use std::thread;
-use std::time::Duration;
+use std::sync::Arc;
 
 struct Bulkhead {
     max_concurrent_tasks: usize,
@@ -29,8 +26,13 @@ impl Bulkhead {
     }
 }
 
-#[tokio::main]
-async fn main() {
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use std::sync::atomic::{AtomicUsize, Ordering};
+
+    #[tokio::test]
+    async fn test_bulkhead() {
     let bulkhead = Arc::new(Bulkhead::new(3));
 
     let handles: Vec<_> = (0..10)
@@ -54,5 +56,6 @@ async fn main() {
         .collect();
 
     futures::future::join_all(handles).await;
+}
 }
 

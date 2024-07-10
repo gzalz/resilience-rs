@@ -1,5 +1,4 @@
 use std::time::{Duration, Instant};
-use std::sync::{Arc, Mutex};
 
 #[derive(Debug)]
 enum CircuitBreakerState {
@@ -91,7 +90,12 @@ impl CircuitBreaker {
     }
 }
 
-fn main() {
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use std::sync::atomic::{AtomicUsize, Ordering};
+
+    fn test_circuitbreaker() {
     let breaker = Arc::new(Mutex::new(CircuitBreaker::new(3, Duration::new(5, 0))));
 
     let task = || -> Result<(), &'static str> {
@@ -106,5 +110,5 @@ fn main() {
             Err(err) => println!("Task failed with error: {}", err),
         }
     }
+    }
 }
-

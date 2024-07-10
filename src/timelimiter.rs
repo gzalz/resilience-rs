@@ -1,7 +1,5 @@
-use std::sync::Arc;
 use std::time::Duration;
-use tokio::time::{timeout, Timeout};
-use tokio::sync::Mutex;
+use tokio::time::timeout;
 
 struct TimeLimiter {
     max_duration: Duration,
@@ -26,8 +24,13 @@ impl TimeLimiter {
     }
 }
 
-#[tokio::main]
-async fn main() {
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use std::sync::atomic::{AtomicUsize, Ordering};
+
+    #[tokio::test]
+async fn test_timelimiter() {
     let time_limiter = Arc::new(TimeLimiter::new(Duration::from_secs(2))); // 2 seconds limit
 
     let handles: Vec<_> = (0..10)
@@ -51,5 +54,6 @@ async fn main() {
         .collect();
 
     futures::future::join_all(handles).await;
+}
 }
 

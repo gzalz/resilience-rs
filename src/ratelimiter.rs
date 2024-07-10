@@ -43,8 +43,13 @@ impl RateLimiter {
     }
 }
 
-#[tokio::main]
-async fn main() {
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use std::sync::atomic::{AtomicUsize, Ordering};
+
+    #[tokio::test]
+async fn test_ratelimiter() {
     let rate_limiter = Arc::new(RateLimiter::new(5, Duration::new(1, 0))); // 5 requests per second
 
     let handles: Vec<_> = (0..10)
@@ -67,4 +72,4 @@ async fn main() {
 
     futures::future::join_all(handles).await;
 }
-
+}
