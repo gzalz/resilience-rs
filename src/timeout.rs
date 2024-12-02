@@ -30,17 +30,16 @@ mod tests {
     use std::sync::atomic::{AtomicUsize, Ordering};
 
     #[tokio::test]
-async fn test_timelimiter() {
-    let time_limiter = Arc::new(Timeout::new(Duration::from_secs(2))); // 2 seconds limit
+async fn test_timeout() {
+    let time_limiter = Arc::new(Timeout::new(Duration::from_secs(2)));
 
     let handles: Vec<_> = (0..10)
         .map(|i| {
             let time_limiter = time_limiter.clone();
             tokio::spawn(async move {
                 let task = move || -> Result<(), &'static str> {
-                    // Simulate a task
                     println!("Task {} is running", i);
-                    std::thread::sleep(Duration::from_secs(3)); // Task takes 3 seconds
+                    std::thread::sleep(Duration::from_secs(3));
                     println!("Task {} is done", i);
                     Ok(())
                 };

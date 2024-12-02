@@ -1,7 +1,7 @@
 #[allow(dead_code)]
 pub mod ratelimiter;
 #[allow(dead_code)]
-pub mod timelimiter;
+pub mod timeout;
 #[allow(dead_code)]
 pub mod bulkhead;
 #[allow(dead_code)]
