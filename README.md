@@ -1,6 +1,6 @@
 # `resilience-rs`
 
-This is a Rust library for building resilient applications. It provides a set of tools to help you build applications that are able to withstand failures and recover from them.
+This is a Rust library for building resilient applications. It provides a set of functional decorators to help you build applications that are able to withstand failures and recover from them.
 
 ## Features
 
