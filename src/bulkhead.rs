@@ -1,6 +1,7 @@
 use std::sync::Arc;
+use std::thread;
 
-struct Bulkhead {
+pub struct Bulkhead {
     max_concurrent_tasks: usize,
     semaphore: Arc<tokio::sync::Semaphore>,
 }
@@ -30,6 +31,7 @@ impl Bulkhead {
 mod tests {
     use super::*;
     use std::sync::atomic::{AtomicUsize, Ordering};
+    use std::sync::Arc;
 
     #[tokio::test]
     async fn test_bulkhead() {

@@ -1,7 +1,7 @@
 use std::time::Duration;
 use tokio::time::timeout;
 
-struct Timeout {
+pub struct Timeout {
     max_duration: Duration,
 }
 
@@ -28,6 +28,7 @@ impl Timeout {
 mod tests {
     use super::*;
     use std::sync::atomic::{AtomicUsize, Ordering};
+    use std::sync::Arc;
 
     #[tokio::test]
 async fn test_timeout() {

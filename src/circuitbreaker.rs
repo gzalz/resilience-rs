@@ -1,13 +1,13 @@
 use std::time::{Duration, Instant};
 
 #[derive(Debug)]
-enum CircuitBreakerState {
+pub enum CircuitBreakerState {
     Closed,
     Open,
     HalfOpen,
 }
 
-struct CircuitBreaker {
+pub struct CircuitBreaker {
     state: CircuitBreakerState,
     failure_count: usize,
     failure_threshold: usize,
@@ -93,9 +93,11 @@ impl CircuitBreaker {
 #[cfg(test)]
 mod tests {
     use super::*;
+    use std::sync::Arc;
     use std::sync::atomic::{AtomicUsize, Ordering};
+    use tokio::sync::Mutex;
 
-    fn test_circuitbreaker() {
+    async fn test_circuitbreaker() {
     let breaker = Arc::new(Mutex::new(CircuitBreaker::new(3, Duration::new(5, 0))));
 
     let task = || -> Result<(), &'static str> {
@@ -104,7 +106,7 @@ mod tests {
     };
 
     for _ in 0..5 {
-        let mut breaker = breaker.lock().unwrap();
+        let mut breaker = breaker.lock().await.unwrap();
         match breaker.call(task) {
             Ok(_) => println!("Task succeeded"),
             Err(err) => println!("Task failed with error: {}", err),
